@@ -19,4 +19,6 @@ public class QueryBody {
     private Match match;
 
     private QueryString queryString;
+
+    private Term term;
 }

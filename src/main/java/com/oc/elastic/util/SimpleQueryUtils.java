@@ -70,4 +70,22 @@ public class SimpleQueryUtils {
                 .withPageable(PageRequest.of(queryBody.getPage(), queryBody.getSize()))
                 .build();
     }
+
+    public static SearchQuery term(QueryBody queryBody) {
+        return new NativeSearchQueryBuilder()
+                .withIndices(queryBody.getIndex())
+                .withQuery(termQuery(queryBody.getTerm().getName(), queryBody.getTerm().getQuery()))
+                .withPageable(PageRequest.of(queryBody.getPage(), queryBody.getSize()))
+                .build();
+    }
+
+    public static SearchQuery terms(QueryBody queryBody) {
+        String[] queryValues = new String[queryBody.getTerm().getQueryList().size()];
+
+        return new NativeSearchQueryBuilder()
+                .withIndices(queryBody.getIndex())
+                .withQuery(termsQuery(queryBody.getTerm().getName(), queryBody.getTerm().getQueryList().toArray(queryValues)))
+                .withPageable(PageRequest.of(queryBody.getPage(), queryBody.getSize()))
+                .build();
+    }
 }
