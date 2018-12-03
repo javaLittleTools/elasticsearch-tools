@@ -21,4 +21,6 @@ public class QueryBody {
     private QueryString queryString;
 
     private Term term;
+
+    private Range range;
 }

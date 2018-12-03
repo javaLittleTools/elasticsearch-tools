@@ -3,18 +3,23 @@ package com.oc.elastic.controller;
 import com.oc.elastic.dto.QueryBody;
 import com.oc.elastic.entity.House;
 import com.oc.elastic.repository.HouseRepository;
-import com.oc.elastic.util.SimpleQueryUtils;
-import com.oc.elastic.util.ResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import static com.oc.elastic.util.QueryUtils.*;
+import static com.oc.elastic.util.ResultUtils.searchResult;
 
 /**
  * @author SxL
@@ -35,11 +40,11 @@ public class HouseController {
         List<Object> houseList = new ArrayList<>();
         List<Object> houseVOList = new ArrayList<>();
 
-        SearchQuery searchQuery = SimpleQueryUtils.matchAll(queryBody);
+        SearchQuery searchQuery = buildQuery(queryBody, matchAll());
 
         Page housePage = houseRepository.search(searchQuery);
 
-       return ResultUtils.searchResult(housePage, houseList, houseVOList);
+       return searchResult(housePage, houseList, houseVOList);
     }
 
     @GetMapping("/house/match")
@@ -47,11 +52,11 @@ public class HouseController {
         List<Object> houseList = new ArrayList<>();
         List<Object> houseVOList = new ArrayList<>();
 
-        SearchQuery searchQuery = SimpleQueryUtils.match(queryBody);
+        SearchQuery searchQuery = buildQuery(queryBody, match(queryBody));
 
         Page<House> housePage = houseRepository.search(searchQuery);
 
-        return ResultUtils.searchResult(housePage, houseList, houseVOList);
+        return searchResult(housePage, houseList, houseVOList);
     }
 
     @GetMapping("/house/multi_match_value")
@@ -59,11 +64,11 @@ public class HouseController {
         List<Object> houseList = new ArrayList<>();
         List<Object> houseVOList = new ArrayList<>();
 
-        SearchQuery searchQuery = SimpleQueryUtils.multiMatchForSameValue(queryBody);
+        SearchQuery searchQuery = buildQuery(queryBody, multiMatchForSameValue(queryBody));
 
         Page<House> housePage = houseRepository.search(searchQuery);
 
-        return ResultUtils.searchResult(housePage, houseList, houseVOList);
+        return searchResult(housePage, houseList, houseVOList);
     }
 
     @GetMapping("/house/match_phrase")
@@ -71,11 +76,11 @@ public class HouseController {
         List<Object> houseList = new ArrayList<>();
         List<Object> houseVOList = new ArrayList<>();
 
-        SearchQuery searchQuery = SimpleQueryUtils.matchPhrase(queryBody);
+        SearchQuery searchQuery = buildQuery(queryBody, matchPhrase(queryBody));
 
         Page<House> housePage = houseRepository.search(searchQuery);
 
-        return ResultUtils.searchResult(housePage, houseList, houseVOList);
+        return searchResult(housePage, houseList, houseVOList);
     }
 
     @GetMapping("/house/query_string")
@@ -83,10 +88,16 @@ public class HouseController {
         List<Object> houseList = new ArrayList<>();
         List<Object> houseVOList = new ArrayList<>();
 
-        SearchQuery searchQuery = SimpleQueryUtils.queryString(queryBody);
+        SearchQuery searchQuery = buildQuery(queryBody, queryString(queryBody));
 
         Page<House> housePage = houseRepository.search(searchQuery);
 
-        return ResultUtils.searchResult(housePage, houseList, houseVOList);
+        return searchResult(housePage, houseList, houseVOList);
+    }
+
+    @GetMapping("/date/{date}")
+    public Date date(@PathVariable("date") String date) throws ParseException {
+        Date date1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(date);
+        return date1;
     }
 }
