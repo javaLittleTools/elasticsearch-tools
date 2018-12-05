@@ -32,20 +32,20 @@ public class QueryUtils {
     }
 
     public static MatchQueryBuilder match(QueryBody queryBody) {
-        return matchQuery(queryBody.getMatch().getName(), queryBody.getMatch().getQuery())
+        return matchQuery(queryBody.getMatch().getField(), queryBody.getMatch().getQuery())
                 .operator(Operator.fromString(queryBody.getMatch().getOperator()))
                 .minimumShouldMatch(queryBody.getMatch().getMiniShouldMatch());
     }
 
     public static MultiMatchQueryBuilder multiMatchForSameValue(QueryBody queryBody) {
-        String[] matchNames = new String[queryBody.getMatch().getNameList().size()];
+        String[] matchNames = new String[queryBody.getMatch().getFieldList().size()];
 
-        return multiMatchQuery(queryBody.getMatch().getQuery(), queryBody.getMatch().getNameList().toArray(matchNames))
+        return multiMatchQuery(queryBody.getMatch().getQuery(), queryBody.getMatch().getFieldList().toArray(matchNames))
                 .operator(Operator.fromString(queryBody.getMatch().getOperator()));
     }
 
     public static MatchPhraseQueryBuilder matchPhrase(QueryBody queryBody) {
-        return matchPhraseQuery(queryBody.getMatch().getName(), queryBody.getMatch().getQuery())
+        return matchPhraseQuery(queryBody.getMatch().getField(), queryBody.getMatch().getQuery())
                 .slop(queryBody.getMatch().getSlop());
     }
 
@@ -63,53 +63,53 @@ public class QueryUtils {
     }
 
     public static TermQueryBuilder term(QueryBody queryBody) {
-        return termQuery(queryBody.getTerm().getName(), queryBody.getTerm().getQuery());
+        return termQuery(queryBody.getTerm().getField(), queryBody.getTerm().getQuery());
     }
 
     public static TermsQueryBuilder terms(QueryBody queryBody) {
         String[] queryValues = new String[queryBody.getTerm().getQueryList().size()];
 
-        return termsQuery(queryBody.getTerm().getName(), queryBody.getTerm().getQueryList().toArray(queryValues));
+        return termsQuery(queryBody.getTerm().getField(), queryBody.getTerm().getQueryList().toArray(queryValues));
     }
 
     public static RangeQueryBuilder dateFrom(QueryBody queryBody) {
-        return rangeQuery(queryBody.getRange().getName())
+        return rangeQuery(queryBody.getRange().getField())
                 .from(queryBody.getRange().getFrom());
     }
 
     public static RangeQueryBuilder dateTo(QueryBody queryBody) {
-        return rangeQuery(queryBody.getRange().getName())
+        return rangeQuery(queryBody.getRange().getField())
                 .to(queryBody.getRange().getTo());
     }
 
     public static RangeQueryBuilder dateRange(QueryBody queryBody) {
-        return rangeQuery(queryBody.getRange().getName())
+        return rangeQuery(queryBody.getRange().getField())
                 .from(queryBody.getRange().getFrom())
                 .to(queryBody.getRange().getTo());
     }
 
     public static RangeQueryBuilder numericGt(QueryBody queryBody) {
-        return rangeQuery(queryBody.getRange().getName())
+        return rangeQuery(queryBody.getRange().getField())
                 .gt(queryBody.getRange().getGt());
     }
 
     public static RangeQueryBuilder numericGte(QueryBody queryBody) {
-        return rangeQuery(queryBody.getRange().getName())
+        return rangeQuery(queryBody.getRange().getField())
                 .gte(queryBody.getRange().getGte());
     }
 
     public static RangeQueryBuilder numericLt(QueryBody queryBody) {
-        return rangeQuery(queryBody.getRange().getName())
+        return rangeQuery(queryBody.getRange().getField())
                 .lt(queryBody.getRange().getLt());
     }
 
     public static RangeQueryBuilder numericLte(QueryBody queryBody) {
-        return rangeQuery(queryBody.getRange().getName())
+        return rangeQuery(queryBody.getRange().getField())
                 .lte(queryBody.getRange().getLte());
     }
 
     public static RangeQueryBuilder numericRange(QueryBody queryBody) {
-        RangeQueryBuilder rangeQueryBuilder = rangeQuery(queryBody.getRange().getName());
+        RangeQueryBuilder rangeQueryBuilder = rangeQuery(queryBody.getRange().getField());
 
         if (queryBody.getRange().getGt() != null) {
             rangeQueryBuilder.gt(queryBody.getRange().getGt());

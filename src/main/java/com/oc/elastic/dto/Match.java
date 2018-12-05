@@ -13,9 +13,9 @@ import java.util.List;
 @ToString
 public class Match {
 
-    private String name;
+    private String field;
 
-    private List<String> nameList;
+    private List<String> fieldList;
 
     private String query;
 

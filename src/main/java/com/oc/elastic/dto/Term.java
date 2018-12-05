@@ -13,7 +13,7 @@ public class Term {
 
     private String query;
 
-    private String name;
+    private String field;
 
     private List<String> queryList;
 }

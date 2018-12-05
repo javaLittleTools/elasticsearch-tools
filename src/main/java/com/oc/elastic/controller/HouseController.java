@@ -8,14 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.oc.elastic.util.QueryUtils.*;
@@ -93,11 +89,5 @@ public class HouseController {
         Page<House> housePage = houseRepository.search(searchQuery);
 
         return searchResult(housePage, houseList, houseVOList);
-    }
-
-    @GetMapping("/date/{date}")
-    public Date date(@PathVariable("date") String date) throws ParseException {
-        Date date1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(date);
-        return date1;
     }
 }
